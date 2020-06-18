@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/invested_assets_table"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginBottom="10dp">
+    <TableRow
+        android:background="@color/rowColor"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="10dp"
+            android:textStyle="bold"
+            android:text="@string/invested_assets"/>
+    </TableRow>
+
+    <include layout="@layout/taxable_accounts"/>
+    <include layout="@layout/retirement_accounts"/>
+    <include layout="@layout/business_ownership_interests"/>
+    <TableRow>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/Indent1"
+            android:textStyle="bold"
+            android:text="@string/total_invested_assets"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dollar" />
+        <TextView
+            android:id="@+id/total_invested_assets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </TableRow>
+</TableLayout>

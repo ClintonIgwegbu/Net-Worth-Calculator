@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/asset_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/asset_heading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorSecondary2"
+        android:padding="10dp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:text="@string/assets"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/cash_table"/>
+            <include layout="@layout/invested_assets_table"/>
+            <include layout="@layout/use_assets_table"/>
+
+            <TextView
+                android:id="@+id/total_assets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:theme="@style/Indent1"
+                android:text="@string/total_assets"/>
+
+            <Button
+                android:id='@+id/calculate_button'
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/calculate"/>
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>

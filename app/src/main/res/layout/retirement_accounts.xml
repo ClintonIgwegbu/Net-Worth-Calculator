@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TableRow
+        android:layout_marginTop="5dp"
+        android:background="@color/rowColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/retirement_accounts"
+            android:theme="@style/Indent1" />
+    </TableRow>
+
+    <TableRow android:background="@color/rowColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ira"
+            android:theme="@style/Indent2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dollar" />
+
+        <EditText
+            android:id="@+id/ira"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@color/textboxColor"
+            android:inputType="numberDecimal" />
+    </TableRow>
+
+    <TableRow android:background="@color/rowColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/roth_ira"
+            android:theme="@style/Indent2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dollar" />
+
+        <EditText
+            android:id="@+id/roth_ira"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@color/textboxColor"
+            android:inputType="numberDecimal" />
+    </TableRow>
+
+    <TableRow android:background="@color/rowColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/_401_k_or_403_b"
+            android:theme="@style/Indent2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dollar" />
+
+        <EditText
+            android:id="@+id/_401_k_or_403_b"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@color/textboxColor"
+            android:inputType="numberDecimal" />
+    </TableRow>
+
+    <TableRow android:background="@color/rowColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sep_ira"
+            android:theme="@style/Indent2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dollar" />
+
+        <EditText
+            android:id="@+id/sep_ira"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@color/textboxColor"
+            android:inputType="numberDecimal" />
+    </TableRow>
+
+    <TableRow android:background="@color/rowColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/keogh_or_other_qualified_plan"
+            android:theme="@style/Indent2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dollar" />
+
+        <EditText
+            android:id="@+id/keogh"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@color/textboxColor"
+            android:inputType="numberDecimal" />
+    </TableRow>
+
+    <TableRow android:background="@color/rowColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pension_vested_benefit"
+            android:theme="@style/Indent2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dollar" />
+
+        <EditText
+            android:id="@+id/pension_vested_benefit"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@color/textboxColor"
+            android:inputType="numberDecimal" />
+    </TableRow>
+
+    <TableRow
+        android:layout_marginBottom="5dp"
+        android:background="@color/rowColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/annuity_accumulated_value"
+            android:theme="@style/Indent2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dollar" />
+
+        <EditText
+            android:id="@+id/annuity_accumulated_value"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@color/textboxColor"
+            android:inputType="numberDecimal" />
+    </TableRow>
+</merge>

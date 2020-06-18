@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TableRow
+        android:layout_marginTop="5dp"
+        android:background="@color/rowColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/business_ownership_interests"
+            android:theme="@style/Indent1" />
+    </TableRow>
+
+    <TableRow android:background="@color/rowColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/real_estate_rental_property_or_land"
+            android:theme="@style/Indent2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dollar" />
+
+        <EditText
+            android:id="@+id/real_estate_rental_property_or_land"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@color/textboxColor"
+            android:inputType="numberDecimal" />
+    </TableRow>
+
+    <TableRow android:background="@color/rowColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sole_proprietorship"
+            android:theme="@style/Indent2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dollar" />
+
+        <EditText
+            android:id="@+id/sole_propietorship"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@color/textboxColor"
+            android:inputType="numberDecimal" />
+    </TableRow>
+
+    <TableRow android:background="@color/rowColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/partnership"
+            android:theme="@style/Indent2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dollar" />
+
+        <EditText
+            android:id="@+id/partnership"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@color/textboxColor"
+            android:inputType="numberDecimal" />
+    </TableRow>
+
+    <TableRow android:background="@color/rowColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/c_corporation"
+            android:theme="@style/Indent2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dollar" />
+
+        <EditText
+            android:id="@+id/c_corporation"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@color/textboxColor"
+            android:inputType="numberDecimal" />
+    </TableRow>
+
+    <TableRow android:background="@color/rowColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/s_corporation"
+            android:theme="@style/Indent2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dollar" />
+
+        <EditText
+            android:id="@+id/s_corporation"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@color/textboxColor"
+            android:inputType="numberDecimal" />
+    </TableRow>
+
+    <TableRow android:background="@color/rowColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/limited_liability_company"
+            android:theme="@style/Indent2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dollar" />
+
+        <EditText
+            android:id="@+id/limited_liability_company"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@color/textboxColor"
+            android:inputType="numberDecimal" />
+    </TableRow>
+
+    <TableRow
+        android:layout_marginBottom="5dp"
+        android:background="@color/rowColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/other"
+            android:theme="@style/Indent2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dollar" />
+
+        <EditText
+            android:id="@+id/other_business_interests"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@color/textboxColor"
+            android:inputType="numberDecimal" />
+    </TableRow>
+</merge>

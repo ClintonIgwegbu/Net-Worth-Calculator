@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_summary"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/summary" />
+
+    <item
+        android:id="@+id/navigation_asset"
+        android:icon="@drawable/ic_arrow_up_24dp"
+        android:title="@string/assets" />
+
+    <item
+        android:id="@+id/navigation_liability"
+        android:icon="@drawable/ic_arrow_down_24dp"
+        android:title="@string/liabilities" />
+
+    <item
+        android:id="@+id/navigation_history"
+        android:icon="@drawable/ic_graph_24dp"
+        android:title="@string/history" />
+
+</menu>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TableRow
+        android:layout_marginTop="5dp"
+        android:background="@color/rowColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/taxable_accounts"
+            android:theme="@style/Indent1" />
+    </TableRow>
+
+    <TableRow android:background="@color/rowColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/brokerage"
+            android:theme="@style/Indent2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dollar" />
+
+        <EditText
+            android:id="@+id/brokerage"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@color/textboxColor"
+            android:inputType="numberDecimal" />
+    </TableRow>
+
+    <TableRow
+        android:layout_marginBottom="5dp"
+        android:background="@color/rowColor">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/other"
+            android:theme="@style/Indent2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dollar" />
+
+        <EditText
+            android:id="@+id/other_taxable"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:background="@color/textboxColor"
+            android:inputType="numberDecimal" />
+    </TableRow>
+</merge>

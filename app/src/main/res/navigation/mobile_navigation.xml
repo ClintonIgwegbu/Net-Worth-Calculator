@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_summary">
+    <fragment
+        android:id="@+id/navigation_summary"
+        android:name="com.nile.networthcalculator.ui.summary.SummaryFragment"
+        android:label="@string/app_name" />
+    <fragment
+        android:id="@+id/navigation_asset"
+        android:name="com.nile.networthcalculator.ui.assets.AssetFragment"
+        android:label="@string/app_name" />
+    <fragment
+        android:id="@+id/navigation_liability"
+        android:name="com.nile.networthcalculator.ui.liabilities.LiabilityFragment"
+        android:label="@string/app_name" />
+    <fragment
+        android:id="@+id/navigation_history"
+        android:name="com.nile.networthcalculator.ui.history.HistoryFragment"
+        android:label="@string/app_name" />
+</navigation>

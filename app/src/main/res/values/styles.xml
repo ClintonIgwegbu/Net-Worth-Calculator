@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary2</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="colorButtonNormal">@color/buttonColor</item>
+        <item name="actionBarStyle">@style/myActionBar</item>
+        <item name="editTextStyle">@style/myTextBoxStyle</item>
+    </style>
+    
+    <style name="myTextBoxStyle">
+        <item name="background">@color/textboxColor</item>
+    </style>
+
+    <style name="myActionBar">
+        <item name="android:background">@color/actionBarColor</item>
+        <item name="android:textColor">@color/actionBarTextColor</item>
+    </style>
+    
+    <style name="myDefaultButton">
+        <item name="colorButtonNormal">@color/buttonColor</item>
+    </style>
+
+    <style name="Indent1">
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+    </style>
+
+    <style name="Indent2">
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">40dp</item>
+        <item name="android:paddingRight">20dp</item>
+    </style>
+
+</resources>
