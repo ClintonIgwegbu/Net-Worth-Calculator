@@ -10,38 +10,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
+import com.nile.networthcalculator.BalanceSheetModel;
 import com.nile.networthcalculator.R;
 
-import java.io.Serializable;
 import java.text.NumberFormat;
 
 import static com.nile.networthcalculator.util.Utilities.parseDouble;
 
 public class AssetFragment extends Fragment {
-
-    // Constants for saving instance state
-    static final String CASH_ENTRIES = "cashEntries";
-    static final String INVESTED_ASSET_ENTRIES = "investedAssetEntries";
-    static final String USE_ASSET_ENTRIES = "useAssetEntries";
-    static final String TOTAL_CASH = "totalCash";
-    static final String TOTAL_INVESTED_ASSETS = "totalInvestedAssets";
-    static final String TOTAL_USE_ASSETS = "totalUseAssets";
-    static final String TOTAL_ASSETS = "totalAssets";
-
-    // Array for holding table entries
-    double[] cash_entries = new double[6];
-    double[] invested_asset_entries = new double[16];
-    double[] use_asset_entries = new double[7];
-
-    // Totals
-    double total_cash;
-    double total_invested_assets;
-    double total_use_assets;
-    double total_assets;
 
     // Cash table entries and total
     EditText txtCheckingAccounts;
@@ -85,39 +64,27 @@ public class AssetFragment extends Fragment {
     TextView txtTotalAssets;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if(savedInstanceState != null) {
-            cash_entries = savedInstanceState.getDoubleArray(CASH_ENTRIES);
-            invested_asset_entries = savedInstanceState.getDoubleArray(INVESTED_ASSET_ENTRIES);
-            use_asset_entries = savedInstanceState.getDoubleArray(USE_ASSET_ENTRIES);
-            total_cash = savedInstanceState.getDouble(TOTAL_CASH);
-            total_invested_assets = savedInstanceState.getDouble(TOTAL_INVESTED_ASSETS);
-            total_use_assets = savedInstanceState.getDouble(TOTAL_USE_ASSETS);
-            total_assets = savedInstanceState.getDouble(TOTAL_ASSETS);
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("Something happening", "onCreateView: ");
+
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_asset, container, false);
 
+        final BalanceSheetModel viewModel = ViewModelProviders.of(getActivity()).get(BalanceSheetModel.class);
 
         final View cashTable = root.findViewById(R.id.cash_table);
         final View investedAssetsTable = root.findViewById(R.id.invested_assets_table);
         final View useAssetsTable = root.findViewById(R.id.use_assets_table);
-        final TextView txtTotalAssets = root.findViewById(R.id.total_assets);
         Button calculateButton = root.findViewById(R.id.calculate_button);
 
         fetchTableReferences(root, cashTable, investedAssetsTable, useAssetsTable);
-        populateTables();
+        populateTables(viewModel);
 
         calculateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateQuantities(txtTotalAssets, cashTable, investedAssetsTable, useAssetsTable);
+                updateQuantities(viewModel);
             }
         });
 
@@ -128,20 +95,8 @@ public class AssetFragment extends Fragment {
     public void onPause() {
         super.onPause();
         Log.d("Something happening", "onPause: here! ");
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.d("Other thing happening", "onSaveInstanceState: there! ");
-        saveTableEntries();
-        outState.putDoubleArray(CASH_ENTRIES, cash_entries);
-        outState.putDoubleArray(INVESTED_ASSET_ENTRIES, invested_asset_entries);
-        outState.putDoubleArray(USE_ASSET_ENTRIES, use_asset_entries);
-        outState.putDouble(TOTAL_CASH, total_cash);
-        outState.putDouble(TOTAL_INVESTED_ASSETS, total_invested_assets);
-        outState.putDouble(TOTAL_USE_ASSETS, total_use_assets);
-        outState.putDouble(TOTAL_ASSETS, total_assets);
+        BalanceSheetModel viewModel = ViewModelProviders.of(getActivity()).get(BalanceSheetModel.class);
+        saveTableEntries(viewModel);  // Persist table data
     }
 
     public void fetchTableReferences(View root, View cashTable, View investedAssetsTable, View useAssetsTable) {
@@ -189,189 +144,97 @@ public class AssetFragment extends Fragment {
         txtTotalAssets = root.findViewById(R.id.total_assets);
     }
 
-    public void saveTableEntries() {
-        total_cash = 0;
-        total_invested_assets = 0;
-        total_use_assets = 0;
+    public void saveTableEntries(BalanceSheetModel viewModel) {
+        viewModel.cash_entries[0] = parseDouble(txtCheckingAccounts.getText().toString());
+        viewModel.cash_entries[1] = parseDouble(txtSavingsAccounts.getText().toString());
+        viewModel.cash_entries[2] = parseDouble(txtMoneyMarketAccounts.getText().toString());
+        viewModel.cash_entries[3] = parseDouble(txtSavingsBonds.getText().toString());
+        viewModel.cash_entries[4] = parseDouble(txtCds.getText().toString());
+        viewModel.cash_entries[5] = parseDouble(txtCashValueLifeInsurance.getText().toString());
 
-        cash_entries[0] = parseDouble(txtCheckingAccounts.getText().toString());
-        cash_entries[1] = parseDouble(txtSavingsAccounts.getText().toString());
-        cash_entries[2] = parseDouble(txtMoneyMarketAccounts.getText().toString());
-        cash_entries[3] = parseDouble(txtSavingsBonds.getText().toString());
-        cash_entries[4] = parseDouble(txtCds.getText().toString());
-        cash_entries[5] = parseDouble(txtCashValueLifeInsurance.getText().toString());
+        viewModel.invested_asset_entries[0] = parseDouble(txtBrokerage.getText().toString());
+        viewModel.invested_asset_entries[1] = parseDouble(txtOtherTaxable.getText().toString());
+        viewModel.invested_asset_entries[2] = parseDouble(txtIRA.getText().toString());
+        viewModel.invested_asset_entries[3] = parseDouble(txtRothIRA.getText().toString());
+        viewModel.invested_asset_entries[4] = parseDouble(txt401k.getText().toString());
+        viewModel.invested_asset_entries[5] = parseDouble(txtSEPIRA.getText().toString());
+        viewModel.invested_asset_entries[6] = parseDouble(txtKeogh.getText().toString());
+        viewModel.invested_asset_entries[7] = parseDouble(txtPension.getText().toString());
+        viewModel.invested_asset_entries[8] = parseDouble(txtAnnuity.getText().toString());
+        viewModel.invested_asset_entries[9] = parseDouble(txtRealEstate.getText().toString());
+        viewModel.invested_asset_entries[10] = parseDouble(txtSolePropietorship.getText().toString());
+        viewModel.invested_asset_entries[11] = parseDouble(txtPartnership.getText().toString());
+        viewModel.invested_asset_entries[12] = parseDouble(txtCCorporation.getText().toString());
+        viewModel.invested_asset_entries[13] = parseDouble(txtSCorporation.getText().toString());
+        viewModel.invested_asset_entries[14] = parseDouble(txtLLC.getText().toString());
+        viewModel.invested_asset_entries[15] = parseDouble(txtOtherBusinessInterests.getText().toString());
 
-        invested_asset_entries[0] = parseDouble(txtBrokerage.getText().toString());
-        invested_asset_entries[1] = parseDouble(txtOtherTaxable.getText().toString());
-        invested_asset_entries[2] = parseDouble(txtIRA.getText().toString());
-        invested_asset_entries[3] = parseDouble(txtRothIRA.getText().toString());
-        invested_asset_entries[4] = parseDouble(txt401k.getText().toString());
-        invested_asset_entries[5] = parseDouble(txtSEPIRA.getText().toString());
-        invested_asset_entries[6] = parseDouble(txtKeogh.getText().toString());
-        invested_asset_entries[7] = parseDouble(txtPension.getText().toString());
-        invested_asset_entries[8] = parseDouble(txtAnnuity.getText().toString());
-        invested_asset_entries[9] = parseDouble(txtRealEstate.getText().toString());
-        invested_asset_entries[10] = parseDouble(txtSolePropietorship.getText().toString());
-        invested_asset_entries[11] = parseDouble(txtPartnership.getText().toString());
-        invested_asset_entries[12] = parseDouble(txtCCorporation.getText().toString());
-        invested_asset_entries[13] = parseDouble(txtSCorporation.getText().toString());
-        invested_asset_entries[14] = parseDouble(txtLLC.getText().toString());
-        invested_asset_entries[15] = parseDouble(txtOtherBusinessInterests.getText().toString());
+        viewModel.use_asset_entries[0] = parseDouble(txtPrincipalHome.getText().toString());
+        viewModel.use_asset_entries[1] = parseDouble(txtVacationHome.getText().toString());
+        viewModel.use_asset_entries[2] = parseDouble(txtCarsTrucksBoats.getText().toString());
+        viewModel.use_asset_entries[3] = parseDouble(txtHomeFurnishings.getText().toString());
+        viewModel.use_asset_entries[4] = parseDouble(txtArt.getText().toString());
+        viewModel.use_asset_entries[5] = parseDouble(txtJewelryFurs.getText().toString());
+        viewModel.use_asset_entries[6] = parseDouble(txtOtherUseAssets.getText().toString());
 
-        use_asset_entries[0] = parseDouble(txtPrincipalHome.getText().toString());
-        use_asset_entries[1] = parseDouble(txtVacationHome.getText().toString());
-        use_asset_entries[2] = parseDouble(txtCarsTrucksBoats.getText().toString());
-        use_asset_entries[3] = parseDouble(txtHomeFurnishings.getText().toString());
-        use_asset_entries[4] = parseDouble(txtArt.getText().toString());
-        use_asset_entries[5] = parseDouble(txtJewelryFurs.getText().toString());
-        use_asset_entries[6] = parseDouble(txtOtherUseAssets.getText().toString());
-
-        for (double entry : cash_entries) {
-            total_cash += entry;
-        }
-
-        for (double entry : invested_asset_entries) {
-            total_invested_assets += entry;
-        }
-
-        for (double entry : use_asset_entries) {
-            total_use_assets += entry;
-        }
-
-        total_assets = total_cash + total_invested_assets + total_use_assets;
+        viewModel.updateAssets();
     }
 
-    public void populateTables() {
+    public void populateTables(BalanceSheetModel viewModel) {
         NumberFormat nm = NumberFormat.getNumberInstance();
 
         // Populate cash table
-        txtCheckingAccounts.setText(nm.format(cash_entries[0]));
-        txtSavingsAccounts.setText(nm.format(cash_entries[1]));
-        txtMoneyMarketAccounts.setText(nm.format(cash_entries[2]));
-        txtSavingsBonds.setText(nm.format(cash_entries[3]));
-        txtCds.setText(nm.format(cash_entries[4]));
-        txtCashValueLifeInsurance.setText(nm.format(cash_entries[5]));
+        txtCheckingAccounts.setText(nm.format(viewModel.cash_entries[0]));
+        txtSavingsAccounts.setText(nm.format(viewModel.cash_entries[1]));
+        txtMoneyMarketAccounts.setText(nm.format(viewModel.cash_entries[2]));
+        txtSavingsBonds.setText(nm.format(viewModel.cash_entries[3]));
+        txtCds.setText(nm.format(viewModel.cash_entries[4]));
+        txtCashValueLifeInsurance.setText(nm.format(viewModel.cash_entries[5]));
 
         // Populate invested asset table
-        txtBrokerage.setText(nm.format(invested_asset_entries[0]));
-        txtOtherTaxable.setText(nm.format(invested_asset_entries[1]));
-        txtIRA.setText(nm.format(invested_asset_entries[2]));
-        txtRothIRA.setText(nm.format(invested_asset_entries[3]));
-        txt401k.setText(nm.format(invested_asset_entries[4]));
-        txtSEPIRA.setText(nm.format(invested_asset_entries[5]));
-        txtKeogh.setText(nm.format(invested_asset_entries[6]));
-        txtPension.setText(nm.format(invested_asset_entries[7]));
-        txtAnnuity.setText(nm.format(invested_asset_entries[8]));
-        txtRealEstate.setText(nm.format(invested_asset_entries[9]));
-        txtSolePropietorship.setText(nm.format(invested_asset_entries[10]));
-        txtPartnership.setText(nm.format(invested_asset_entries[11]));
-        txtCCorporation.setText(nm.format(invested_asset_entries[12]));
-        txtSCorporation.setText(nm.format(invested_asset_entries[13]));
-        txtLLC.setText(nm.format(invested_asset_entries[14]));
-        txtOtherBusinessInterests.setText(nm.format(invested_asset_entries[15]));
+        txtBrokerage.setText(nm.format(viewModel.invested_asset_entries[0]));
+        txtOtherTaxable.setText(nm.format(viewModel.invested_asset_entries[1]));
+        txtIRA.setText(nm.format(viewModel.invested_asset_entries[2]));
+        txtRothIRA.setText(nm.format(viewModel.invested_asset_entries[3]));
+        txt401k.setText(nm.format(viewModel.invested_asset_entries[4]));
+        txtSEPIRA.setText(nm.format(viewModel.invested_asset_entries[5]));
+        txtKeogh.setText(nm.format(viewModel.invested_asset_entries[6]));
+        txtPension.setText(nm.format(viewModel.invested_asset_entries[7]));
+        txtAnnuity.setText(nm.format(viewModel.invested_asset_entries[8]));
+        txtRealEstate.setText(nm.format(viewModel.invested_asset_entries[9]));
+        txtSolePropietorship.setText(nm.format(viewModel.invested_asset_entries[10]));
+        txtPartnership.setText(nm.format(viewModel.invested_asset_entries[11]));
+        txtCCorporation.setText(nm.format(viewModel.invested_asset_entries[12]));
+        txtSCorporation.setText(nm.format(viewModel.invested_asset_entries[13]));
+        txtLLC.setText(nm.format(viewModel.invested_asset_entries[14]));
+        txtOtherBusinessInterests.setText(nm.format(viewModel.invested_asset_entries[15]));
 
         // Populate use asset table
-        txtPrincipalHome.setText(nm.format(use_asset_entries[0]));
-        txtVacationHome.setText(nm.format(use_asset_entries[1]));
-        txtCarsTrucksBoats.setText(nm.format(use_asset_entries[2]));
-        txtHomeFurnishings.setText(nm.format(use_asset_entries[3]));
-        txtArt.setText(nm.format(use_asset_entries[4]));
-        txtJewelryFurs.setText(nm.format(use_asset_entries[5]));
-        txtOtherUseAssets.setText(nm.format(use_asset_entries[6]));
+        txtPrincipalHome.setText(nm.format(viewModel.use_asset_entries[0]));
+        txtVacationHome.setText(nm.format(viewModel.use_asset_entries[1]));
+        txtCarsTrucksBoats.setText(nm.format(viewModel.use_asset_entries[2]));
+        txtHomeFurnishings.setText(nm.format(viewModel.use_asset_entries[3]));
+        txtArt.setText(nm.format(viewModel.use_asset_entries[4]));
+        txtJewelryFurs.setText(nm.format(viewModel.use_asset_entries[5]));
+        txtOtherUseAssets.setText(nm.format(viewModel.use_asset_entries[6]));
 
         // Populate table totals
-        txtTotalCash.setText(nm.format(total_cash));
-        txtTotalInvestedAssets.setText(nm.format(total_invested_assets));
-        txtTotalUseAssets.setText(nm.format(total_use_assets));
+        txtTotalCash.setText(nm.format(viewModel.total_cash));
+        txtTotalInvestedAssets.setText(nm.format(viewModel.total_invested_assets));
+        txtTotalUseAssets.setText(nm.format(viewModel.total_use_assets));
 
         // Populate overall total
-        txtTotalAssets.setText(nm.format(total_assets));
+        txtTotalAssets.setText(nm.format(viewModel.total_assets));
     }
 
-    public void updateQuantities(TextView txtTotalAssets, View cashTable, View investedAssetsTable, View useAssetsTable) {
-//        EditText txtCheckingAccounts = cashTable.findViewById(R.id.checking_accounts);
-//        EditText txtSavingsAccounts = cashTable.findViewById(R.id.savings_accounts);
-//        EditText txtMoneyMarketAccounts = cashTable.findViewById(R.id.money_market_accounts);
-//        EditText txtSavingsBonds = cashTable.findViewById(R.id.savings_bonds);
-//        EditText txtCds = cashTable.findViewById(R.id.cds);
-//        EditText txtCashValueLifeInsurance = cashTable.findViewById(R.id.cash_value_of_life_insurance);
-//        TextView txtTotalCash = cashTable.findViewById(R.id.total_cash);
-//
-//        EditText txtBrokerage = investedAssetsTable.findViewById(R.id.brokerage);
-//        EditText txtOtherTaxable = investedAssetsTable.findViewById(R.id.other_taxable);
-//        EditText txtIRA = investedAssetsTable.findViewById(R.id.ira);
-//        EditText txtRothIRA = investedAssetsTable.findViewById(R.id.roth_ira);
-//        EditText txt401k = investedAssetsTable.findViewById(R.id._401_k_or_403_b);
-//        EditText txtSEPIRA = investedAssetsTable.findViewById(R.id.sep_ira);
-//        EditText txtKeogh = investedAssetsTable.findViewById(R.id.keogh);
-//        EditText txtPension = investedAssetsTable.findViewById(R.id.pension_vested_benefit);
-//        EditText txtAnnuity = investedAssetsTable.findViewById(R.id.annuity_accumulated_value);
-//        EditText txtRealEstate = investedAssetsTable.findViewById(R.id.real_estate_rental_property_or_land);
-//        EditText txtSolePropietorship = investedAssetsTable.findViewById(R.id.sole_propietorship);
-//        EditText txtPartnership = investedAssetsTable.findViewById(R.id.partnership);
-//        EditText txtCCorporation = investedAssetsTable.findViewById(R.id.c_corporation);
-//        EditText txtSCorporation = investedAssetsTable.findViewById(R.id.s_corporation);
-//        EditText txtLLC = investedAssetsTable.findViewById(R.id.limited_liability_company);
-//        EditText txtOtherBusinessInterests = investedAssetsTable.findViewById(R.id.other_business_interests);
-//        TextView txtTotalInvestedAssets = investedAssetsTable.findViewById(R.id.total_invested_assets);
-//
-//        EditText txtPrincipalHome = useAssetsTable.findViewById(R.id.principal_home);
-//        EditText txtVacationHome = useAssetsTable.findViewById(R.id.vacation_home);
-//        EditText txtCarsTrucksBoats = useAssetsTable.findViewById(R.id.cars_trucks_boats);
-//        EditText txtHomeFurnishings = useAssetsTable.findViewById(R.id.home_furnishings);
-//        EditText txtArt = useAssetsTable.findViewById(R.id.art_antiques_coins_collectibles);
-//        EditText txtJewelryFurs = useAssetsTable.findViewById(R.id.jewelry_furs);
-//        EditText txtOtherUseAssets = useAssetsTable.findViewById(R.id.other_use_assets);
-//        TextView txtTotalUseAssets = useAssetsTable.findViewById(R.id.total_use_assets);
-//
-//        double checkingAccounts = parseDouble(txtCheckingAccounts.getText().toString());
-//        double savingsAccounts = parseDouble(txtSavingsAccounts.getText().toString());
-//        double moneyMarketAccounts = parseDouble(txtMoneyMarketAccounts.getText().toString());
-//        double savingsBonds = parseDouble(txtSavingsBonds.getText().toString());
-//        double cds = parseDouble(txtCds.getText().toString());
-//        double cashValueLifeInsurance = parseDouble(txtCashValueLifeInsurance.getText().toString());
-//
-//        double brokerage = parseDouble(txtBrokerage.getText().toString());
-//        double otherTaxable = parseDouble(txtOtherTaxable.getText().toString());
-//        double IRA = parseDouble(txtIRA.getText().toString());
-//        double RothIRA = parseDouble(txtRothIRA.getText().toString());
-//        double _401k = parseDouble(txt401k.getText().toString());
-//        double SEPIRA = parseDouble(txtSEPIRA.getText().toString());
-//        double Keogh = parseDouble(txtKeogh.getText().toString());
-//        double pension = parseDouble(txtPension.getText().toString());
-//        double annuity = parseDouble(txtAnnuity.getText().toString());
-//        double realEstate = parseDouble(txtRealEstate.getText().toString());
-//        double solePropietorship = parseDouble(txtSolePropietorship.getText().toString());
-//        double partnership = parseDouble(txtPartnership.getText().toString());
-//        double CCorporation = parseDouble(txtCCorporation.getText().toString());
-//        double SCorporation = parseDouble(txtSCorporation.getText().toString());
-//        double LLC = parseDouble(txtLLC.getText().toString());
-//        double otherBusinessInterests = parseDouble(txtOtherBusinessInterests.getText().toString());
-//
-//        double principalHome = parseDouble(txtPrincipalHome.getText().toString());
-//        double vacationHome = parseDouble(txtVacationHome.getText().toString());
-//        double carsTrucksBoats = parseDouble(txtCarsTrucksBoats.getText().toString());
-//        double homeFurnishings = parseDouble(txtHomeFurnishings.getText().toString());
-//        double art = parseDouble(txtArt.getText().toString());
-//        double jewelryFurs = parseDouble(txtJewelryFurs.getText().toString());
-//        double otherUseAssets = parseDouble(txtOtherUseAssets.getText().toString());
-//
-//        double totalCash = checkingAccounts + savingsAccounts + moneyMarketAccounts + savingsBonds
-//                + cds + cashValueLifeInsurance;
-//        double totalInvestedAssets = brokerage + otherTaxable + IRA + RothIRA + _401k + SEPIRA
-//                + Keogh + pension + annuity + realEstate + solePropietorship + partnership +
-//                CCorporation + SCorporation + LLC + otherBusinessInterests;
-//        double totalUseAssets = principalHome + vacationHome + carsTrucksBoats + homeFurnishings +
-//                art + jewelryFurs + otherUseAssets;
-//        double totalAssets = totalCash + totalInvestedAssets + totalUseAssets;
-
-        saveTableEntries();
+    public void updateQuantities(BalanceSheetModel viewModel) {
+        saveTableEntries(viewModel);
 
         NumberFormat nm = NumberFormat.getNumberInstance();
-        txtTotalCash.setText(nm.format(total_cash));
-        txtTotalInvestedAssets.setText(nm.format(total_invested_assets));
-        txtTotalUseAssets.setText(nm.format(total_use_assets));
-        txtTotalAssets.setText(nm.format(total_assets));
+        txtTotalCash.setText(nm.format(viewModel.total_cash));
+        txtTotalInvestedAssets.setText(nm.format(viewModel.total_invested_assets));
+        txtTotalUseAssets.setText(nm.format(viewModel.total_use_assets));
+        txtTotalAssets.setText(nm.format(viewModel.total_assets));
     }
 
 }

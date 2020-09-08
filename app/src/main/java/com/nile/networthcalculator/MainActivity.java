@@ -29,5 +29,19 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
+//        final AssetModel viewModel = ViewModelProviders.of(this).get(AssetModel.class);
+//        viewModel.userLiveData.observer(this, new Observer() {
+//            @Override
+//            public void onChanged(@Nullable User data) {
+//                // update ui.
+//            }
+//        });
+//        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                viewModel.doAction();
+//            }
+//        });
+
     }
 }
