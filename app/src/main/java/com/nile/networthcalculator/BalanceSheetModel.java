@@ -2,6 +2,11 @@ package com.nile.networthcalculator;
 
 import androidx.lifecycle.ViewModel;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 public class BalanceSheetModel extends ViewModel {
     // Asset tables
     public double[] cash_entries = new double[6];
@@ -20,6 +25,14 @@ public class BalanceSheetModel extends ViewModel {
 
     // Total liabilities
     public double total_liabilites;
+
+    // History
+//    public int[][] history;
+    public Map<Float, Integer> history;
+
+    public BalanceSheetModel() {
+        LoadHistory();
+    }
 
     public void updateAssets() {
         total_cash = 0;
@@ -52,6 +65,13 @@ public class BalanceSheetModel extends ViewModel {
         for (double entry: long_term_liabilities) {
             total_liabilites += entry;
         }
+    }
+
+    private void LoadHistory() {
+        history = new HashMap<Float, Integer>();
+        Calendar calendar = Calendar.getInstance();
+        history.put(calendar.get(Calendar.YEAR) + (calendar.get(Calendar.DAY_OF_YEAR) - 1) / 365f, 23);
+        history.put(calendar.get(Calendar.YEAR) + (calendar.get(Calendar.DAY_OF_YEAR) - 1 + 5) / 365f, 67);
     }
 //    public BalanceSheetModel() {
 //        // trigger asset load.
