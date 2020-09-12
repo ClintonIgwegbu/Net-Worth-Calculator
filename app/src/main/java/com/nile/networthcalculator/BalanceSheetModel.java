@@ -3,7 +3,6 @@ package com.nile.networthcalculator;
 import androidx.lifecycle.ViewModel;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +26,6 @@ public class BalanceSheetModel extends ViewModel {
     public double total_liabilites;
 
     // History
-//    public int[][] history;
     public Map<Float, Integer> history;
 
     public BalanceSheetModel() {
