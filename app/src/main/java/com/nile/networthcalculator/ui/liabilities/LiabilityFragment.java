@@ -1,5 +1,8 @@
 package com.nile.networthcalculator.ui.liabilities;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -61,6 +64,7 @@ public class LiabilityFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 updateQuantities(viewModel);
+                storeTableInDatabase(viewModel);
             }
         });
 
@@ -91,6 +95,46 @@ public class LiabilityFragment extends Fragment {
 
         txtTotalLiabilities = root.findViewById(R.id.total_liabilities);
 
+    }
+
+    public void storeTableInDatabase(BalanceSheetModel viewModel) {
+        // I'm not sure that this stuff should be done in the asset fragment
+        // Maybe it should be done in the viewmodel if possible
+        // Balance sheet columns
+        String COLUMN_NAME = "item_name";
+        String COLUMN_VALUE = "item_value";
+
+        ContentResolver contentResolver = getActivity().getContentResolver();
+        final String AUTHORITY = "com.nile.networthcalculator.NetWorthProvider";
+        final Uri BALANCE_SHEET_URI = Uri.parse("content://" + AUTHORITY + "/networth/balancesheet");
+        ContentValues[] values = new ContentValues[12];
+        for (int i = 0; i < values.length; i++)
+            values[i] = new ContentValues(1);
+        values[0].put(COLUMN_VALUE, viewModel.current_liabilities[0]);
+        values[1].put(COLUMN_VALUE, viewModel.current_liabilities[1]);
+        values[2].put(COLUMN_VALUE, viewModel.current_liabilities[2]);
+        values[3].put(COLUMN_VALUE, viewModel.long_term_liabilities[0]);
+        values[4].put(COLUMN_VALUE, viewModel.long_term_liabilities[1]);
+        values[5].put(COLUMN_VALUE, viewModel.long_term_liabilities[2]);
+        values[6].put(COLUMN_VALUE, viewModel.long_term_liabilities[3]);
+        values[7].put(COLUMN_VALUE, viewModel.long_term_liabilities[4]);
+        values[8].put(COLUMN_VALUE, viewModel.long_term_liabilities[5]);
+        values[9].put(COLUMN_VALUE, viewModel.long_term_liabilities[6]);
+        values[10].put(COLUMN_VALUE, viewModel.total_liabilites);
+        values[11].put(COLUMN_VALUE, viewModel.net_worth);
+
+        contentResolver.update(BALANCE_SHEET_URI, values[0], COLUMN_NAME + " = ?", new String[]{"credit_card_balances"});
+        contentResolver.update(BALANCE_SHEET_URI, values[1], COLUMN_NAME + " = ?", new String[]{"income_tax_owed"});
+        contentResolver.update(BALANCE_SHEET_URI, values[2], COLUMN_NAME + " = ?", new String[]{"other_bills"});
+        contentResolver.update(BALANCE_SHEET_URI, values[3], COLUMN_NAME + " = ?", new String[]{"home_mortgage"});
+        contentResolver.update(BALANCE_SHEET_URI, values[4], COLUMN_NAME + " = ?", new String[]{"home_equity_loan"});
+        contentResolver.update(BALANCE_SHEET_URI, values[5], COLUMN_NAME + " = ?", new String[]{"mortgages_on_rentals"});
+        contentResolver.update(BALANCE_SHEET_URI, values[6], COLUMN_NAME + " = ?", new String[]{"car_loans"});
+        contentResolver.update(BALANCE_SHEET_URI, values[7], COLUMN_NAME + " = ?", new String[]{"student_loans"});
+        contentResolver.update(BALANCE_SHEET_URI, values[8], COLUMN_NAME + " = ?", new String[]{"life_insurance_policy_loans"});
+        contentResolver.update(BALANCE_SHEET_URI, values[9], COLUMN_NAME + " = ?", new String[]{"other_long_term_debt"});
+        contentResolver.update(BALANCE_SHEET_URI, values[10], COLUMN_NAME + " = ?", new String[]{"total_liabilities"});
+        contentResolver.update(BALANCE_SHEET_URI, values[11], COLUMN_NAME + " = ?", new String[]{"net_worth"});
     }
 
     public void populateTables(BalanceSheetModel viewModel) {

@@ -1,5 +1,8 @@
 package com.nile.networthcalculator.ui.assets;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -85,6 +88,8 @@ public class AssetFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 updateQuantities(viewModel);
+//                viewModel.storeTableInDatabase();
+                storeTableInDatabase(viewModel);
             }
         });
 
@@ -142,6 +147,91 @@ public class AssetFragment extends Fragment {
 
         // Overall total
         txtTotalAssets = root.findViewById(R.id.total_assets);
+    }
+
+    public void storeTableInDatabase(BalanceSheetModel viewModel) {
+        // I'm not sure that this stuff should be done in the asset fragment
+        // Maybe it should be done in the viewmodel if possible
+        // Balance sheet columns
+        String COLUMN_NAME = "item_name";
+        String COLUMN_VALUE = "item_value";
+
+        ContentResolver contentResolver = getActivity().getContentResolver();
+        final String AUTHORITY = "com.nile.networthcalculator.NetWorthProvider";
+        final Uri BALANCE_SHEET_URI = Uri.parse("content://" + AUTHORITY + "/networth/balancesheet");
+
+        ContentValues[] values = new ContentValues[34];
+        for (int i = 0; i < values.length; i++)
+            values[i] = new ContentValues(2);
+        values[0].put(COLUMN_VALUE, viewModel.cash_entries[0]);
+        values[1].put(COLUMN_VALUE, viewModel.cash_entries[1]);
+        values[2].put(COLUMN_VALUE, viewModel.cash_entries[2]);
+        values[3].put(COLUMN_VALUE, viewModel.cash_entries[3]);
+        values[4].put(COLUMN_VALUE, viewModel.cash_entries[4]);
+        values[5].put(COLUMN_VALUE, viewModel.cash_entries[5]);
+        values[6].put(COLUMN_VALUE, viewModel.total_cash);
+        values[7].put(COLUMN_VALUE, viewModel.invested_asset_entries[0]);
+        values[8].put(COLUMN_VALUE, viewModel.invested_asset_entries[1]);
+        values[9].put(COLUMN_VALUE, viewModel.invested_asset_entries[2]);
+        values[10].put(COLUMN_VALUE, viewModel.invested_asset_entries[3]);
+        values[11].put(COLUMN_VALUE, viewModel.invested_asset_entries[4]);
+        values[12].put(COLUMN_VALUE, viewModel.invested_asset_entries[5]);
+        values[13].put(COLUMN_VALUE, viewModel.invested_asset_entries[6]);
+        values[14].put(COLUMN_VALUE, viewModel.invested_asset_entries[7]);
+        values[15].put(COLUMN_VALUE, viewModel.invested_asset_entries[8]);
+        values[16].put(COLUMN_VALUE, viewModel.invested_asset_entries[9]);
+        values[17].put(COLUMN_VALUE, viewModel.invested_asset_entries[10]);
+        values[18].put(COLUMN_VALUE, viewModel.invested_asset_entries[11]);
+        values[19].put(COLUMN_VALUE, viewModel.invested_asset_entries[12]);
+        values[20].put(COLUMN_VALUE, viewModel.invested_asset_entries[13]);
+        values[21].put(COLUMN_VALUE, viewModel.invested_asset_entries[14]);
+        values[22].put(COLUMN_VALUE, viewModel.invested_asset_entries[15]);
+        values[23].put(COLUMN_VALUE, viewModel.total_invested_assets);
+        values[24].put(COLUMN_VALUE, viewModel.use_asset_entries[0]);
+        values[25].put(COLUMN_VALUE, viewModel.use_asset_entries[1]);
+        values[26].put(COLUMN_VALUE, viewModel.use_asset_entries[2]);
+        values[27].put(COLUMN_VALUE, viewModel.use_asset_entries[3]);
+        values[28].put(COLUMN_VALUE, viewModel.use_asset_entries[4]);
+        values[29].put(COLUMN_VALUE, viewModel.use_asset_entries[5]);
+        values[30].put(COLUMN_VALUE, viewModel.use_asset_entries[6]);
+        values[31].put(COLUMN_VALUE, viewModel.total_use_assets);
+        values[32].put(COLUMN_VALUE, viewModel.total_assets);
+        values[33].put(COLUMN_VALUE, viewModel.net_worth);
+
+        contentResolver.update(BALANCE_SHEET_URI, values[0], COLUMN_NAME + " = ?", new String[]{"checking_accounts"});
+        contentResolver.update(BALANCE_SHEET_URI, values[1], COLUMN_NAME + " = ?", new String[]{"savings_accounts"});
+        contentResolver.update(BALANCE_SHEET_URI, values[2], COLUMN_NAME + " = ?", new String[]{"money_market_accounts"});
+        contentResolver.update(BALANCE_SHEET_URI, values[3], COLUMN_NAME + " = ?", new String[]{"savings_bonds"});
+        contentResolver.update(BALANCE_SHEET_URI, values[4], COLUMN_NAME + " = ?", new String[]{"cds"});
+        contentResolver.update(BALANCE_SHEET_URI, values[5], COLUMN_NAME + " = ?", new String[]{"cash_value_life_insurance"});
+        contentResolver.update(BALANCE_SHEET_URI, values[6], COLUMN_NAME + " = ?", new String[]{"total_cash"});
+        contentResolver.update(BALANCE_SHEET_URI, values[7], COLUMN_NAME + " = ?", new String[]{"brokerage"});
+        contentResolver.update(BALANCE_SHEET_URI, values[8], COLUMN_NAME + " = ?", new String[]{"other_taxable"});
+        contentResolver.update(BALANCE_SHEET_URI, values[9], COLUMN_NAME + " = ?", new String[]{"ira"});
+        contentResolver.update(BALANCE_SHEET_URI, values[10], COLUMN_NAME + " = ?", new String[]{"roth_ira"});
+        contentResolver.update(BALANCE_SHEET_URI, values[11], COLUMN_NAME + " = ?", new String[]{"401k"});
+        contentResolver.update(BALANCE_SHEET_URI, values[12], COLUMN_NAME + " = ?", new String[]{"sep_ira"});
+        contentResolver.update(BALANCE_SHEET_URI, values[13], COLUMN_NAME + " = ?", new String[]{"keogh"});
+        contentResolver.update(BALANCE_SHEET_URI, values[14], COLUMN_NAME + " = ?", new String[]{"pension"});
+        contentResolver.update(BALANCE_SHEET_URI, values[15], COLUMN_NAME + " = ?", new String[]{"annuity"});
+        contentResolver.update(BALANCE_SHEET_URI, values[16], COLUMN_NAME + " = ?", new String[]{"real_estate"});
+        contentResolver.update(BALANCE_SHEET_URI, values[17], COLUMN_NAME + " = ?", new String[]{"sole_propietorship"});
+        contentResolver.update(BALANCE_SHEET_URI, values[18], COLUMN_NAME + " = ?", new String[]{"partnership"});
+        contentResolver.update(BALANCE_SHEET_URI, values[19], COLUMN_NAME + " = ?", new String[]{"ccorporation"});
+        contentResolver.update(BALANCE_SHEET_URI, values[20], COLUMN_NAME + " = ?", new String[]{"scorporation"});
+        contentResolver.update(BALANCE_SHEET_URI, values[21], COLUMN_NAME + " = ?", new String[]{"llc"});
+        contentResolver.update(BALANCE_SHEET_URI, values[22], COLUMN_NAME + " = ?", new String[]{"other_business_interests"});
+        contentResolver.update(BALANCE_SHEET_URI, values[23], COLUMN_NAME + " = ?", new String[]{"total_invested_assets"});
+        contentResolver.update(BALANCE_SHEET_URI, values[24], COLUMN_NAME + " = ?", new String[]{"principal_home"});
+        contentResolver.update(BALANCE_SHEET_URI, values[25], COLUMN_NAME + " = ?", new String[]{"vacation_home"});
+        contentResolver.update(BALANCE_SHEET_URI, values[26], COLUMN_NAME + " = ?", new String[]{"cars_trucks_boats"});
+        contentResolver.update(BALANCE_SHEET_URI, values[27], COLUMN_NAME + " = ?", new String[]{"home_furnishings"});
+        contentResolver.update(BALANCE_SHEET_URI, values[28], COLUMN_NAME + " = ?", new String[]{"art"});
+        contentResolver.update(BALANCE_SHEET_URI, values[29], COLUMN_NAME + " = ?", new String[]{"jewelry_furs"});
+        contentResolver.update(BALANCE_SHEET_URI, values[30], COLUMN_NAME + " = ?", new String[]{"other_use_assets"});
+        contentResolver.update(BALANCE_SHEET_URI, values[31], COLUMN_NAME + " = ?", new String[]{"total_use_assets"});
+        contentResolver.update(BALANCE_SHEET_URI, values[32], COLUMN_NAME + " = ?", new String[]{"total_assets"});
+        contentResolver.update(BALANCE_SHEET_URI, values[33], COLUMN_NAME + " = ?", new String[]{"net_worth"});
     }
 
     public void saveTableEntries(BalanceSheetModel viewModel) {
