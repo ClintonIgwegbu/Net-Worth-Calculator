@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
 //                viewModel.doAction();
 //            }
 //        });
-
     }
 
     private void loadBalanceSheet(BalanceSheetModel viewModel) {

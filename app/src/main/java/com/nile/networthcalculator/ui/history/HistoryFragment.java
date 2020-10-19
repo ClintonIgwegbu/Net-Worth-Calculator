@@ -29,15 +29,16 @@ import java.util.HashMap;
 import java.util.List;
 
 public class HistoryFragment extends Fragment {
+    String TAG = "HistoryFragment";
 
-    private class MyValueFormatter implements IValueFormatter {
+    private static class MyValueFormatter implements IValueFormatter {
         @Override
         public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
             return "$" + value;
         }
     }
 
-    private class MyAxisValueFormatter implements IAxisValueFormatter {
+    private static class MyAxisValueFormatter implements IAxisValueFormatter {
         HashMap<Integer, String> intToMonth = createIntToMonth();
 
         private HashMap<Integer, String> createIntToMonth() {
@@ -49,53 +50,11 @@ public class HistoryFragment extends Fragment {
            return intToMonth;
         }
 
-        private HashMap<Integer, Integer> createMonthToDays(boolean leapYear) {
-            HashMap<Integer, Integer> monthToDays = new HashMap<Integer, Integer>();
-            monthToDays.put(1, 0); monthToDays.put(2, 31);
-            if (leapYear) {
-                monthToDays.put(3, 59);
-                monthToDays.put(4, 90); monthToDays.put(5, 120); monthToDays.put(6, 151);
-                monthToDays.put(7, 181); monthToDays.put(8, 212); monthToDays.put(9, 243);
-                monthToDays.put(10, 273); monthToDays.put(11, 304); monthToDays.put(12, 334);
-            } else {
-                monthToDays.put(3, 60);
-                monthToDays.put(4, 91); monthToDays.put(5, 121); monthToDays.put(6, 152);
-                monthToDays.put(7, 182); monthToDays.put(8, 213); monthToDays.put(9, 244);
-                monthToDays.put(10, 274); monthToDays.put(11, 305); monthToDays.put(12, 335);
-            }
-            return monthToDays;
-        }
-
-        private int getMonth(int days, HashMap<Integer, Integer> monthToDays) {
-            int left = 1;
-            int right = 12;
-            int mid = 1;
-
-            while (left < right) {
-                mid = (int)Math.ceil(left + (right - left) / 2.0);
-                if (monthToDays.get(mid) == days)
-                    return mid;
-                else if (monthToDays.get(mid) > days)
-                    right = mid - 1;
-                else
-                    left = mid;
-            }
-
-            return left;
-        }
-
         @Override
         public String getFormattedValue(float value, AxisBase axis) {
-            int year = (int)value;
-            boolean leapYear = year % 4 == 0;
-            int days = (int)Math.ceil((value - (int)value) * 365.0);
-            if (leapYear)
-                days = (int)Math.ceil((value - (int)value) * 366.0);
-            HashMap<Integer, Integer> monthToDays = createMonthToDays(leapYear);
-            int month = getMonth(days, monthToDays);
-//            return intToMonth.get(month) + " " + (days - monthToDays.get(month)) + " " + year % 100;
-            return intToMonth.get(month) + " " + (days - monthToDays.get(month));
-
+            int month = (int)(12 * (value - (int)value));
+            int year = (int)value % 100;
+            return intToMonth.get(month + 1) + " " + year;
         }
     }
 

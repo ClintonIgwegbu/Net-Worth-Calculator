@@ -1,6 +1,7 @@
 package com.nile.networthcalculator;
 
 import android.content.ContentResolver;
+import android.util.Log;
 
 import androidx.lifecycle.ViewModel;
 
@@ -9,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BalanceSheetModel extends ViewModel {
+    String TAG = "BalanceSheetModel";
+
     // Asset tables
     public double[] cash_entries = new double[6];
     public double[] invested_asset_entries = new double[16];
@@ -75,8 +78,11 @@ public class BalanceSheetModel extends ViewModel {
     private void LoadHistory() {
         history = new HashMap<Float, Integer>();
         Calendar calendar = Calendar.getInstance();
-        history.put(calendar.get(Calendar.YEAR) + (calendar.get(Calendar.DAY_OF_YEAR) - 1) / 365f, 23);
-        history.put(calendar.get(Calendar.YEAR) + (calendar.get(Calendar.DAY_OF_YEAR) - 1 + 5) / 365f, 67);
+//        history.put(calendar.get(Calendar.YEAR) + (calendar.get(Calendar.DAY_OF_YEAR) - 1) / 365f, 23);
+//        history.put(calendar.get(Calendar.YEAR) + (calendar.get(Calendar.DAY_OF_YEAR) - 1 + 5) / 365f, 67);
+        history.put(calendar.get(Calendar.YEAR) + calendar.get(Calendar.MONTH) / 12f, 23);
+        history.put(calendar.get(Calendar.YEAR) + (calendar.get(Calendar.MONTH) + 3) / 12f, 67);
+        Log.d(TAG, String.format("%d", calendar.get(Calendar.MONTH)));
     }
 //    public BalanceSheetModel() {
 //        // trigger asset load.
