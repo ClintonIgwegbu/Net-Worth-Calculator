@@ -22,13 +22,6 @@ import java.net.URI;
 // Content resolver (in client app) can query the stored data. The stored data does not
 // necessarily have to be a SQLite database. E.g. it could be in Json format.
 public class NetWorthProvider extends ContentProvider {
-    // This database should have one tables. One table should store the DETAILS of the most recent
-    // asset and liability entries. The other table should simply store the net worth values for
-    // each month. Why am I using a database for the balance sheet when I could use JSON?
-
-    // TODO: Replace uses of parseId with something correct
-    // TODO: Figure out why history table apparently doesn't have all columns I created
-    // TODO: Understand how to make sure balance sheet is populated before main activity runs
 
     // Log tag
     private static final String TAG = "NetWorthProvider";
@@ -142,9 +135,6 @@ public class NetWorthProvider extends ContentProvider {
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection,
                       @Nullable String[] selectionArgs) {
         int count;
-        Log.d(TAG, "selection: " + selection);
-//        Log.d(TAG, "selectionArgs: " + selectionArgs[0]);
-//        Log.d(TAG, "selectionArgs length: " + selectionArgs.length);
 
         // You can't change a db entry id, column name or column date
         if (values.containsKey(COLUMN_ID) || values.containsKey(COLUMN_NAME) || values.containsKey(COLUMN_DATE))
@@ -157,7 +147,6 @@ public class NetWorthProvider extends ContentProvider {
                         BALANCE_SHEET_TABLE,
                         values,
                         selection,
-//                        new String[]{Long.toString(ContentUris.parseId(uri))}
                         selectionArgs
                 );
                 break;
@@ -166,8 +155,8 @@ public class NetWorthProvider extends ContentProvider {
                 count = db.update(
                         HISTORY_TABLE,
                         values,
-                        COLUMN_DATE + "=?",
-                        new String[]{Long.toString(ContentUris.parseId(uri))}
+                        selection,
+                        selectionArgs
                 );
                 break;
             default:
@@ -196,7 +185,7 @@ public class NetWorthProvider extends ContentProvider {
                 count = db.delete(
                         HISTORY_TABLE,
                         COLUMN_DATE + "=?",
-                        new String[]{Long.toString(ContentUris.parseId(uri))}
+                        selectionArgs
                 );
                 break;
             default:
@@ -282,15 +271,12 @@ public class NetWorthProvider extends ContentProvider {
                     COLUMN_LIABILITIES + " double not null, " +
                     COLUMN_NETWORTH + " double not null);";
 
-        static final ContentValues[] values = new ContentValues[45];
-
         // Called when the app is installed
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(BALANCE_TABLE_CREATE);  // create balance sheet table
             db.execSQL(HISTORY_TABLE_CREATE); // create history table
             populateBalanceSheet(db);  // populate balance sheet with asset/liability rows
-//            Log.d(TAG, c.getString(1));
         }
 
         // Upgrades the database using SQL ALTER statements
@@ -302,7 +288,7 @@ public class NetWorthProvider extends ContentProvider {
         }
 
         private static void populateBalanceSheet(SQLiteDatabase db) {
-//            ContentValues[] values = new ContentValues[45];
+            ContentValues[] values = new ContentValues[45];
             for (int i = 0; i < values.length; i++)
                 values[i] = new ContentValues(2);
             values[0].put(COLUMN_NAME, "checking_accounts");

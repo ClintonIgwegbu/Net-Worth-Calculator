@@ -22,6 +22,9 @@ import java.util.List;
 
 public class SummaryFragment extends Fragment {
 
+    // TODO: Include breakdown of asset and liablity proportions such as cash, invested assets, etc.
+    // TODO: Scrap pie chart of assets and liabilities as it is not informative. Maybe use bars
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

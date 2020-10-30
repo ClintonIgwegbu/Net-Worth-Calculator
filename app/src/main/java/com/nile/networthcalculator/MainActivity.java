@@ -8,6 +8,7 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -35,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        final BalanceSheetModel viewModel = ViewModelProviders.of(this).get(BalanceSheetModel.class);
+//        final BalanceSheetModel viewModel = ViewModelProviders.of(this).get(BalanceSheetModel.class);
+        final BalanceSheetModel viewModel = ViewModelProviders.of(this, new BalanceSheetModelFactory(getContentResolver())).get(BalanceSheetModel.class);
         loadBalanceSheet(viewModel);
         // Load most recent user data into viewModel
 
@@ -63,8 +65,7 @@ public class MainActivity extends AppCompatActivity {
         String COLUMN_ID = "_id";
         String COLUMN_NAME = "item_name";
         String COLUMN_VALUE = "item_value";
-        // TODO: Query database for most recent balance sheet
-        // NOTE: This code assumes that the order of items on the balance sheet is maintained
+
         if (viewModel.total_assets == 0 && viewModel.total_liabilites == 0) {
             Cursor c = contentResolver.query(BALANCE_SHEET_URI, new String[]{COLUMN_VALUE}, null, null, null);
             c.moveToFirst();
