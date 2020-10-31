@@ -3,10 +3,8 @@ package com.nile.networthcalculator.ui.history;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +22,7 @@ import com.nile.networthcalculator.BalanceSheetModel;
 import com.nile.networthcalculator.R;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -79,17 +77,20 @@ public class HistoryFragment extends Fragment {
         for (float key : viewModel.history.keySet()) {
             value.add(new Entry(key, viewModel.history.get(key)));
         }
-        LineDataSet dataSet = new LineDataSet(value, "Historical net worth");
-        LineData data = new LineData(dataSet);
-        chart.setData(data);
+
+        if (value.size() != 0) {
+            LineDataSet dataSet = new LineDataSet(value, "Historical net worth");
+            LineData data = new LineData(dataSet);
+            chart.setData(data);
+        }
         chart.setBackgroundColor(0xFFF2F2F2);
+        chart.setPinchZoom(true);
         chart.animateXY(1400, 1400);
+        chart.setNoDataText("No history");
         XAxis xAxis = chart.getXAxis();
         xAxis.setValueFormatter(new MyAxisValueFormatter());
+        chart.invalidate();
         return root;
     }
 
 }
-
-
-

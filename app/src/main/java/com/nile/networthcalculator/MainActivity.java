@@ -8,7 +8,6 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -36,24 +35,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-//        final BalanceSheetModel viewModel = ViewModelProviders.of(this).get(BalanceSheetModel.class);
         final BalanceSheetModel viewModel = ViewModelProviders.of(this, new BalanceSheetModelFactory(getContentResolver())).get(BalanceSheetModel.class);
         loadBalanceSheet(viewModel);
-        // Load most recent user data into viewModel
-
-//        final AssetModel viewModel = ViewModelProviders.of(this).get(AssetModel.class);
-//        viewModel.userLiveData.observer(this, new Observer() {
-//            @Override
-//            public void onChanged(@Nullable User data) {
-//                // update ui.
-//            }
-//        });
-//        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                viewModel.doAction();
-//            }
-//        });
     }
 
     private void loadBalanceSheet(BalanceSheetModel viewModel) {

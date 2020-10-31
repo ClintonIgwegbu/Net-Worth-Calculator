@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/real_estate_rental_property_or_land"
+            android:text="@string/real_estate"
             android:theme="@style/Indent2" />
 
         <TextView

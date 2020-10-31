@@ -31,7 +31,7 @@
     <string name="c_corporation">C Corporation</string>
     <string name="partnership">Partnership</string>
     <string name="sole_proprietorship">Sole proprietorship</string>
-    <string name="real_estate_rental_property_or_land">Real estate (rental property or land)</string>
+    <string name="real_estate">Real estate</string>
     <string name="business_ownership_interests">Business ownership interests</string>
     <string name="use_assets">Use Assets</string>
     <string name="principal_home">Principal home</string>

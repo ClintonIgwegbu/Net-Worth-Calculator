@@ -7,10 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -39,13 +36,14 @@ public class BalanceSheetModel extends ViewModel {
     public double total_use_assets;
     public double total_assets;
 
-    // Total liabilities
+    // Liability totals
+    public double total_current_liabilities;
+    public double total_long_term_liabilities;
     public double total_liabilites;
 
     public double net_worth = total_assets - total_liabilites;
 
     public Map<Float, Float> history;
-
 
     // DATABASE properties
     // Common database columns
@@ -62,7 +60,7 @@ public class BalanceSheetModel extends ViewModel {
     private static final String COLUMN_NETWORTH = "net_worth";
 
     // Database URIs
-    final Uri BALANCE_SHEET_URI = Uri.parse("content://" + AUTHORITY + "/networth/balancesheet");
+    private static final Uri BALANCE_SHEET_URI = Uri.parse("content://" + AUTHORITY + "/networth/balancesheet");
     private static final Uri HISTORY_URI = Uri.parse("content://" + AUTHORITY + "/networth/history");
 
     public BalanceSheetModel(ContentResolver contentResolver) {
@@ -93,16 +91,19 @@ public class BalanceSheetModel extends ViewModel {
     }
 
     public void updateLiabilities() {
+        total_current_liabilities = 0;
+        total_long_term_liabilities = 0;
         total_liabilites = 0;
 
         for (double entry : current_liabilities) {
-            total_liabilites += entry;
+            total_current_liabilities += entry;
         }
 
         for (double entry: long_term_liabilities) {
-            total_liabilites += entry;
+            total_long_term_liabilities += entry;
         }
 
+        total_liabilites = total_current_liabilities + total_long_term_liabilities;
         net_worth = total_assets - total_liabilites;
     }
 
@@ -217,8 +218,10 @@ public class BalanceSheetModel extends ViewModel {
     @SuppressLint("DefaultLocale")
     public void updateHistory() {
         float date = calendar.get(Calendar.YEAR) + calendar.get(Calendar.MONTH) / 12f;
-        ContentValues values = new ContentValues(2);
+        ContentValues values = new ContentValues(4);
         values.put(COLUMN_NETWORTH, net_worth);
+        values.put(COLUMN_ASSETS, total_assets);
+        values.put(COLUMN_LIABILITIES, total_liabilites);
         if (history.containsKey(date)) {
             contentResolver.update(HISTORY_URI, values, COLUMN_DATE + " = ?", new String[]{String.format("%f", date)});
         } else {
@@ -230,6 +233,7 @@ public class BalanceSheetModel extends ViewModel {
 
     // TODO: Think of potential future optimisations. Must I load the entire history? What are the costs?
     private void LoadHistory() {
+        // Called during initialisation of the view model
         history = new HashMap<Float, Float>();
         Log.d(TAG, String.format("%d", calendar.get(Calendar.MONTH)));
         Cursor c = contentResolver.query(HISTORY_URI, null, null, null, null);
@@ -239,8 +243,5 @@ public class BalanceSheetModel extends ViewModel {
         }
         c.close();
     }
-//    public BalanceSheetModel() {
-//        // trigger asset load.
-          // Perhaps this could load data from a database if necessary
-//    }
+
 }

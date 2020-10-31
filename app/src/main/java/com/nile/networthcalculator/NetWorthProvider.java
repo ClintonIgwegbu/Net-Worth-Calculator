@@ -10,12 +10,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import java.net.URI;
 
 // Content allows stored information to be shared across apps if needed. This allows other
 // apps to access stored data securely. Content provider offers CRUD operations so that a
