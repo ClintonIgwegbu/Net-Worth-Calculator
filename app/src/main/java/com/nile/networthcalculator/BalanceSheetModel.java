@@ -68,6 +68,26 @@ public class BalanceSheetModel extends ViewModel {
         LoadHistory();
     }
 
+    public void resetAssets() {
+        cash_entries = new double[6];
+        invested_asset_entries = new double[16];
+        use_asset_entries = new double[7];
+
+        total_cash = 0;
+        total_invested_assets = 0;
+        total_use_assets = 0;
+        total_assets = 0;
+    }
+
+    public void resetLiabilities() {
+        current_liabilities = new double[3];
+        long_term_liabilities = new double[7];
+
+        total_current_liabilities  = 0;
+        total_long_term_liabilities = 0;
+        total_liabilites = 0;
+    }
+
     public void updateAssets() {
         total_cash = 0;
         total_invested_assets = 0;
@@ -213,6 +233,8 @@ public class BalanceSheetModel extends ViewModel {
         contentResolver.update(BALANCE_SHEET_URI, values[9], COLUMN_NAME + " = ?", new String[]{"other_long_term_debt"});
         contentResolver.update(BALANCE_SHEET_URI, values[10], COLUMN_NAME + " = ?", new String[]{"total_liabilities"});
         contentResolver.update(BALANCE_SHEET_URI, values[11], COLUMN_NAME + " = ?", new String[]{"net_worth"});
+
+        updateHistory();
     }
 
     @SuppressLint("DefaultLocale")

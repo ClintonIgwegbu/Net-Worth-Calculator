@@ -53,7 +53,9 @@ public class LiabilityFragment extends Fragment {
 
         final View currentTable = root.findViewById(R.id.current_liability_table);
         final View longTermTable = root.findViewById(R.id.long_term_liability_table);
-        Button calculateButton = root.findViewById(R.id.calculate_button);
+        Button calculateButton = root.findViewById(R.id.update_btn);
+        Button saveBtn = root.findViewById(R.id.save_btn);
+        Button resetBtn = root.findViewById(R.id.reset_btn);
 
         fetchTableReferences(root, currentTable, longTermTable);
         populateTables(viewModel);
@@ -61,8 +63,25 @@ public class LiabilityFragment extends Fragment {
         calculateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateQuantities(viewModel);
+                persistTableEntries(viewModel);
+                updateTotals(viewModel);
+            }
+        });
+
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                persistTableEntries(viewModel);
+                updateTotals(viewModel);
                 viewModel.storeLiabilities();
+            }
+        });
+
+        resetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.resetLiabilities();
+                populateTables(viewModel);
             }
         });
 
@@ -113,7 +132,7 @@ public class LiabilityFragment extends Fragment {
         txtOtherLongTermDebt.setText(nm.format(viewModel.long_term_liabilities[6]));
 
         // Populate overall total
-        txtTotalLiabilities.setText(nm.format(viewModel.total_liabilites));
+        txtTotalLiabilities.setText(getString(R.string.total_liabilities, viewModel.total_liabilites));
     }
 
     public void persistTableEntries(BalanceSheetModel viewModel) {
@@ -132,9 +151,8 @@ public class LiabilityFragment extends Fragment {
         viewModel.updateLiabilities();
     }
 
-    public void updateQuantities(BalanceSheetModel viewModel) {
-        persistTableEntries(viewModel);
-        txtTotalLiabilities.setText(NumberFormat.getNumberInstance().format(viewModel.total_liabilites));
+    public void updateTotals(BalanceSheetModel viewModel) {
+        txtTotalLiabilities.setText(getString(R.string.total_liabilities, viewModel.total_liabilites));
     }
 
 }

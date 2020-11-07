@@ -35,12 +35,34 @@
                 android:theme="@style/Indent1"
                 android:text="@string/total_liabilities"/>
 
-            <Button
-                android:id='@+id/calculate_button'
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/calculate"/>
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+                <Button
+                    android:id='@+id/reset_btn'
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:text="@string/reset"/>
+                <Button
+                    android:id='@+id/update_btn'
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:text="@string/update"/>
+
+                <Button
+                    android:id='@+id/save_btn'
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:text="@string/save"/>
+            </LinearLayout>
         </LinearLayout>
 
 

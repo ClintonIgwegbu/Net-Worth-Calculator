@@ -1,10 +1,15 @@
 package com.nile.networthcalculator.ui.summary;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +17,27 @@ import android.view.ViewGroup;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.ViewPortHandler;
+import com.nile.networthcalculator.AssetSummaryFragment;
 import com.nile.networthcalculator.BalanceSheetModel;
 import com.nile.networthcalculator.R;
 
@@ -30,8 +46,7 @@ import java.util.List;
 
 public class SummaryFragment extends Fragment {
 
-    // TODO: Include breakdown of asset and liability proportions such as cash, invested assets, etc.
-    // TODO: Scrap pie chart of assets and liabilities as it is not informative. Maybe use bars
+    String TAG = "Summary fragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,75 +58,58 @@ public class SummaryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_summary, container, false);
-        BalanceSheetModel viewModel = ViewModelProviders.of(getActivity()).get(BalanceSheetModel.class);
+        final BalanceSheetModel viewModel = ViewModelProviders.of(getActivity()).get(BalanceSheetModel.class);
 
         // BAR CHART
-        HorizontalBarChart barChart = root.findViewById(R.id.networth_chart);
+        final BarChart barChart = root.findViewById(R.id.networth_chart);
         ArrayList <BarEntry> barValues = new ArrayList<>();
         if (viewModel.total_assets == 0 && viewModel.total_liabilites == 0) {
             barValues.add(new BarEntry(0, 10f));
             barValues.add(new BarEntry(1, 20f));
-
+            barValues.add(new BarEntry(2, -10f));
         } else {
             barValues.add(new BarEntry(0, (float)viewModel.total_assets));
-            barValues.add(new BarEntry(1, new float[]{(float)viewModel.total_liabilites}));
+            barValues.add(new BarEntry(1, (float)viewModel.total_liabilites));
+            barValues.add(new BarEntry(2, (float)viewModel.net_worth));
         }
-        BarDataSet set1 = new BarDataSet(barValues, "Breakdown");
-        set1.setColors(ColorTemplate.LIBERTY_COLORS);
+
+        BarDataSet set1 = new BarDataSet(barValues, "Net worth breakdown (USD)");
+        int[] colors = new int[]{Color.argb(255, 94, 198, 147), Color.argb(255, 172, 25, 44), Color.argb(255, 148, 215, 214)};
+        set1.setColors(colors);
         BarData barData = new BarData(set1);
         barChart.setData(barData);
-
+        barChart.setPinchZoom(false);
+        barChart.setDoubleTapToZoomEnabled(false);
+        barChart.getDescription().setEnabled(false);
+        barChart.animateY(2000);
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
-//        xAxis.setDrawAxisLine(false);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(new String[]{"ASSETS", "LIABILITIES", "NET WORTH"}));
         xAxis.setGranularity(1f);
-        barChart.animateY(2000);
+        barChart.invalidate();
+        final Context context = barChart.getContext();
 
-        // ASSET PIE
-        PieChart assetPie = root.findViewById(R.id.asset_pie);
-        assetPie.setUsePercentValues(true);
+        barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                if (e.getX() == 0 && viewModel.total_assets > 0) {  // ASSETS
+                    NavDirections action =
+                            SummaryFragmentDirections
+                                    .actionNavigationSummaryToAssetSummaryFragment();
+                    Navigation.findNavController(barChart).navigate(action);
+                } else if (e.getX() == 1 && viewModel.total_liabilites > 0) {  // LIABILITIES
+                    NavDirections action =
+                            SummaryFragmentDirections
+                                .actionNavigationSummaryToLiabilitySummaryFragment();
+                    Navigation.findNavController(barChart).navigate(action);
+                }
+            }
 
-        List<PieEntry> assetPieValues = new ArrayList<>();
+            @Override
+            public void onNothingSelected() {}
+        });
 
-        if (viewModel.total_assets == 0) {
-            assetPieValues.add(new PieEntry(33.3f, "CASH"));
-            assetPieValues.add(new PieEntry(33.3f, "INVESTMENTS"));
-            assetPieValues.add(new PieEntry(33.3f, "USE ASSETS"));
-        } else {
-            assetPieValues.add(new PieEntry((float)viewModel.total_cash, "CASH"));
-            assetPieValues.add(new PieEntry((float)viewModel.total_invested_assets, "INVESTMENTS"));
-            assetPieValues.add(new PieEntry((float)viewModel.total_use_assets, "USE ASSETS"));
-        }
-
-        PieDataSet assetDataSet = new PieDataSet(assetPieValues, "Quantities");
-        PieData assetData = new PieData(assetDataSet);
-        assetDataSet.setColors(ColorTemplate.LIBERTY_COLORS);
-        assetPie.setData(assetData);
-
-        assetPie.animateXY(1400, 1400);
-
-        // LIABILITY PIE
-        PieChart liabilityPie = root.findViewById(R.id.liability_pie);
-        assetPie.setUsePercentValues(true);
-
-        List<PieEntry> liabilityPieValues = new ArrayList<>();
-
-        if (viewModel.total_liabilites == 0) {
-            liabilityPieValues.add(new PieEntry(50f, "CURRENT"));
-            liabilityPieValues.add(new PieEntry(50f, "LONG-TERM"));
-
-        } else {
-            liabilityPieValues.add(new PieEntry((float)viewModel.total_current_liabilities, "CURRENT"));
-            liabilityPieValues.add(new PieEntry((float)viewModel.total_long_term_liabilities, "LONG-TERM"));
-        }
-
-        PieDataSet liabilityDataSet = new PieDataSet(liabilityPieValues, "Quantities");
-        PieData liabilityData = new PieData(liabilityDataSet);
-        liabilityDataSet.setColors(ColorTemplate.LIBERTY_COLORS);
-        liabilityPie.setData(liabilityData);
-
-        liabilityPie.animateXY(1400, 1400);
         return root;
     }
 }

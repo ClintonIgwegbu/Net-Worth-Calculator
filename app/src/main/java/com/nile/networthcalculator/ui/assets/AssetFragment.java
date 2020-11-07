@@ -77,19 +77,37 @@ public class AssetFragment extends Fragment {
         final View cashTable = root.findViewById(R.id.cash_table);
         final View investedAssetsTable = root.findViewById(R.id.invested_assets_table);
         final View useAssetsTable = root.findViewById(R.id.use_assets_table);
-        Button calculateButton = root.findViewById(R.id.calculate_button);
+        Button updateBtn = root.findViewById(R.id.update_btn);
+        Button saveBtn = root.findViewById(R.id.save_btn);
+        Button resetBtn = root.findViewById(R.id.reset_btn);
 
         fetchTableReferences(root, cashTable, investedAssetsTable, useAssetsTable);
         populateTables(viewModel);
 
-        calculateButton.setOnClickListener(new View.OnClickListener() {
+        updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateQuantities(viewModel);
+                persistTableEntries(viewModel);
+                updateTotals(viewModel);
+            }
+        });
+
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                persistTableEntries(viewModel);
+                updateTotals(viewModel);
                 viewModel.storeAssets();
             }
         });
 
+        resetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.resetAssets();
+                populateTables(viewModel);
+            }
+        });
         return root;
     }
 
@@ -226,17 +244,15 @@ public class AssetFragment extends Fragment {
         txtTotalUseAssets.setText(nm.format(viewModel.total_use_assets));
 
         // Populate overall total
-        txtTotalAssets.setText(nm.format(viewModel.total_assets));
+        txtTotalAssets.setText(getString(R.string.total_assets, viewModel.total_assets));
     }
 
-    public void updateQuantities(BalanceSheetModel viewModel) {
-        persistTableEntries(viewModel);
-
+    public void updateTotals(BalanceSheetModel viewModel) {
         NumberFormat nm = NumberFormat.getNumberInstance();
         txtTotalCash.setText(nm.format(viewModel.total_cash));
         txtTotalInvestedAssets.setText(nm.format(viewModel.total_invested_assets));
         txtTotalUseAssets.setText(nm.format(viewModel.total_use_assets));
-        txtTotalAssets.setText(nm.format(viewModel.total_assets));
+        txtTotalAssets.setText(getString(R.string.total_assets, viewModel.total_assets));
     }
 
 }

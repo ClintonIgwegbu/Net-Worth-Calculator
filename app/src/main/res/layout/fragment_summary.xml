@@ -6,30 +6,29 @@
     android:orientation="vertical"
     tools:context=".ui.summary.SummaryFragment">
 
-    <com.github.mikephil.charting.charts.HorizontalBarChart
+    <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/networth_chart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_weight="2"/>
+        android:layout_gravity="center" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/asset_pie"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"/>
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/liability_pie"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"/>
-    </LinearLayout>
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_weight="1">-->
+<!--        <com.github.mikephil.charting.charts.PieChart-->
+<!--            android:id="@+id/asset_pie"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_weight="1"/>-->
+<!--        <com.github.mikephil.charting.charts.PieChart-->
+<!--            android:id="@+id/liability_pie"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_weight="1"/>-->
+<!--    </LinearLayout>-->
 
 
 

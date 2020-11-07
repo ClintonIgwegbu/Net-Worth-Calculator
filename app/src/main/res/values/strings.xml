@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Net Worth Calculator</string>
+    <string name="app_name">Wealth Tracker</string>
     <string name="assets">ASSETS</string>
     <string name="checking_accounts">Checking accounts</string>
     <string name="savings_accounts">Savings accounts</string>
@@ -16,8 +16,9 @@
     <string name="brokerage">Brokerage</string>
     <string name="other">Other:______</string>
     <string name="total_invested_assets">Total Invested Assets</string>
-    <string name="total_assets">Total Assets: $0.00</string>
-    <string name="calculate">Calculate</string>
+    <string name="total_assets">Total Assets: $%.2f</string>
+    <string name="update">Update</string>
+    <string name="save">Save</string>
     <string name="retirement_accounts">Retirement accounts</string>
     <string name="ira">IRA</string>
     <string name="roth_ira">Roth IRA</string>
@@ -42,7 +43,7 @@
     <string name="jewelry_furs">Jewelry, furs</string>
     <string name="total_use_assets">Total Use Assets</string>
     <string name="liabilities">LIABILITIES</string>
-    <string name="total_liabilities">Total Liabilities</string>
+    <string name="total_liabilities">Total Liabilities: $%.2f</string>
     <string name="current">Current</string>
     <string name="credit_card_balances">Credit card balances</string>
     <string name="estimated_income_tax_owed">Estimated income tax owed</string>
@@ -60,4 +61,5 @@
     <string name="home">HOME</string>
     <string name="summary">SUMMARY</string>
     <string name="history">HISTORY</string>
+    <string name="reset">Reset</string>
 </resources>

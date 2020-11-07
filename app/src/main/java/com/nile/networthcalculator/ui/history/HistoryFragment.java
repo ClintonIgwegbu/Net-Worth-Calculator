@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +52,7 @@ public class HistoryFragment extends Fragment {
         @Override
         public String getFormattedValue(float value, AxisBase axis) {
             int month = (int)(12 * (value - (int)value));
-            int year = (int)value % 100;
+            int year = (int)value;
             return intToMonth.get(month + 1) + " " + year;
         }
     }
@@ -74,21 +75,32 @@ public class HistoryFragment extends Fragment {
 
         List<Entry> value = new ArrayList<>();
 
+        float xAxisMin = 0f;
+        float xAxisMax = 0f;
         for (float key : viewModel.history.keySet()) {
             value.add(new Entry(key, viewModel.history.get(key)));
+            if (xAxisMin == 0) xAxisMin = key;
+            xAxisMax = key;
         }
 
         if (value.size() != 0) {
-            LineDataSet dataSet = new LineDataSet(value, "Historical net worth");
+            LineDataSet dataSet = new LineDataSet(value, "Historical net worth (USD)");
             LineData data = new LineData(dataSet);
             chart.setData(data);
         }
         chart.setBackgroundColor(0xFFF2F2F2);
         chart.setPinchZoom(true);
-        chart.animateXY(1400, 1400);
         chart.setNoDataText("No history");
+        chart.getAxisLeft().setDrawGridLines(false);
+        chart.getAxisRight().setDrawGridLines(false);
+        chart.getDescription().setEnabled(false);
         XAxis xAxis = chart.getXAxis();
+        xAxis.setDrawGridLines(false);
         xAxis.setValueFormatter(new MyAxisValueFormatter());
+        xAxis.setGranularity(1/12f);  // Minimum axis division is a month
+        xAxis.setAvoidFirstLastClipping(true);
+        xAxis.setAxisMinimum(xAxisMin - 0.1f);
+        xAxis.setAxisMaximum(xAxisMax + 0.1f);
         chart.invalidate();
         return root;
     }
