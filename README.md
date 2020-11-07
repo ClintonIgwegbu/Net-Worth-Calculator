@@ -1,4 +1,4 @@
-# Net-Worth-Calculator
+# Wealth-Tracker
 An app that allows the user to estimate his/her net worth. This app is unfinished though latest progress (as of June 2020) is shown in screenshots below:
 
 <p float="left">
