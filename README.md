@@ -3,6 +3,8 @@ An app that allows the user to estimate his/her net worth. This app is unfinishe
 
 <p float="left">
   <img src="https://github.com/ClintonIgwegbu/Net-Worth-Calculator/blob/master/summary.png" width="40%"/>
+  <img src="https://github.com/ClintonIgwegbu/Net-Worth-Calculator/blob/master/asset_breakdown.png" width="40%"/>
+  <img src="https://github.com/ClintonIgwegbu/Net-Worth-Calculator/blob/master/liability_breakdown.png" width="40%"/>
   <img src="https://github.com/ClintonIgwegbu/Net-Worth-Calculator/blob/master/assets.png" width="40%"/>
   <img src="https://github.com/ClintonIgwegbu/Net-Worth-Calculator/blob/master/liabilities.png" width="40%"/>
   <img src="https://github.com/ClintonIgwegbu/Net-Worth-Calculator/blob/master/history.png" width="40%"/>
