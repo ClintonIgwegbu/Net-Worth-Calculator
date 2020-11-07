@@ -1,23 +1,18 @@
 package com.nile.networthcalculator.ui.liabilities;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import static com.nile.networthcalculator.util.Utilities.parseDouble;
-
 import com.nile.networthcalculator.BalanceSheetModel;
 import com.nile.networthcalculator.BalanceSheetModelFactory;
 import com.nile.networthcalculator.R;
-
 import java.text.NumberFormat;
 
 public class LiabilityFragment extends Fragment {
@@ -53,14 +48,14 @@ public class LiabilityFragment extends Fragment {
 
         final View currentTable = root.findViewById(R.id.current_liability_table);
         final View longTermTable = root.findViewById(R.id.long_term_liability_table);
-        Button calculateButton = root.findViewById(R.id.update_btn);
+        Button updateBtn = root.findViewById(R.id.update_btn);
         Button saveBtn = root.findViewById(R.id.save_btn);
         Button resetBtn = root.findViewById(R.id.reset_btn);
 
         fetchTableReferences(root, currentTable, longTermTable);
         populateTables(viewModel);
 
-        calculateButton.setOnClickListener(new View.OnClickListener() {
+        updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 persistTableEntries(viewModel);
@@ -93,6 +88,7 @@ public class LiabilityFragment extends Fragment {
         super.onPause();
         BalanceSheetModel viewModel = ViewModelProviders.of(getActivity(), new BalanceSheetModelFactory(getActivity().getContentResolver())).get(BalanceSheetModel.class);
         persistTableEntries(viewModel);
+        updateTotals(viewModel);
     }
 
     public void fetchTableReferences(View root, View currentTable, View longTermTable) {

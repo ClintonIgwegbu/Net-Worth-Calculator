@@ -1,7 +1,6 @@
 package com.nile.networthcalculator.ui.assets;
 
 import android.os.Bundle;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,16 +8,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-
 import com.nile.networthcalculator.BalanceSheetModel;
 import com.nile.networthcalculator.BalanceSheetModelFactory;
 import com.nile.networthcalculator.R;
-
 import java.text.NumberFormat;
-
 import static com.nile.networthcalculator.util.Utilities.parseDouble;
 
 public class AssetFragment extends Fragment {
@@ -117,6 +112,7 @@ public class AssetFragment extends Fragment {
         Log.d("Something happening", "onPause: here! ");
         BalanceSheetModel viewModel = ViewModelProviders.of(getActivity(), new BalanceSheetModelFactory(getActivity().getContentResolver())).get(BalanceSheetModel.class);
         persistTableEntries(viewModel);
+        updateTotals(viewModel);
     }
 
     public void fetchTableReferences(View root, View cashTable, View investedAssetsTable, View useAssetsTable) {

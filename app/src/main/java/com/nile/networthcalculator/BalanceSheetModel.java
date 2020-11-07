@@ -6,9 +6,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
-
 import androidx.lifecycle.ViewModel;
-
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -130,7 +128,7 @@ public class BalanceSheetModel extends ViewModel {
     public void storeAssets() {
         ContentValues[] values = new ContentValues[34];
         for (int i = 0; i < values.length; i++)
-            values[i] = new ContentValues(2);
+            values[i] = new ContentValues(1);
         values[0].put(COLUMN_VALUE, cash_entries[0]);
         values[1].put(COLUMN_VALUE, cash_entries[1]);
         values[2].put(COLUMN_VALUE, cash_entries[2]);
