@@ -1,7 +1,6 @@
 package com.nile.networthcalculator.ui.assets;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +61,6 @@ public class AssetFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d("Something happening", "onCreateView: ");
 
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_asset, container, false);
@@ -109,7 +107,6 @@ public class AssetFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.d("Something happening", "onPause: here! ");
         BalanceSheetModel viewModel = ViewModelProviders.of(getActivity(), new BalanceSheetModelFactory(getActivity().getContentResolver())).get(BalanceSheetModel.class);
         persistTableEntries(viewModel);
         updateTotals(viewModel);

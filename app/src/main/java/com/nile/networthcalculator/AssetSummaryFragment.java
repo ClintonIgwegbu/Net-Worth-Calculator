@@ -3,7 +3,6 @@ package com.nile.networthcalculator;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +26,6 @@ public class AssetSummaryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        Log.d(TAG, (String) getActivity().getTitle());
     }
 
     @Override
@@ -69,7 +67,6 @@ public class AssetSummaryFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.i(TAG,"Back Button Pressed");
         getActivity().onBackPressed();
         return true;
     }

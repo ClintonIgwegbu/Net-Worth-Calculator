@@ -5,7 +5,6 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -255,7 +254,6 @@ public class BalanceSheetModel extends ViewModel {
     private void LoadHistory() {
         // Called during initialisation of the view model
         history = new HashMap<Float, Float>();
-        Log.d(TAG, String.format("%d", calendar.get(Calendar.MONTH)));
         Cursor c = contentResolver.query(HISTORY_URI, null, null, null, null);
         c.moveToFirst();
         for (int i = 0; i < c.getCount(); i++) {

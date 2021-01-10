@@ -20,7 +20,6 @@ import androidx.annotation.Nullable;
 // necessarily have to be a SQLite database. E.g. it could be in Json format.
 public class NetWorthProvider extends ContentProvider {
 
-    // Log tag
     private static final String TAG = "NetWorthProvider";
 
     // Common database columns

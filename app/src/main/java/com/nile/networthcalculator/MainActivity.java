@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
@@ -51,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         if (viewModel.total_assets == 0 && viewModel.total_liabilites == 0) {
             Cursor c = contentResolver.query(BALANCE_SHEET_URI, new String[]{COLUMN_VALUE}, null, null, null);
             c.moveToFirst();
-            Log.d(TAG, String.format("Cursor count is %d", c.getCount()));
             for (int i = 0; i < viewModel.cash_entries.length; i++) {
                 viewModel.cash_entries[i] = c.getDouble(2);
                 c.moveToNext();
